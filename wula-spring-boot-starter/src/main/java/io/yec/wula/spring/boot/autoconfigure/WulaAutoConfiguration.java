@@ -1,0 +1,54 @@
+package io.yec.wula.spring.boot.autoconfigure;
+
+import io.yec.wula.core.executor.ExtExtensionExecutorImpl;
+import io.yec.wula.core.executor.ExtensionExecutor;
+import io.yec.wula.core.extension.ExtensionPoint;
+import io.yec.wula.core.extension.identity.IdentityAssembler;
+import io.yec.wula.core.register.GroupExtensionRegister;
+import io.yec.wula.core.register.IExtensionRegister;
+import io.yec.wula.core.routerule.holder.GroupExtensionRouteRuleHolder;
+import io.yec.wula.core.routerule.holder.IExtensionRouteRuleHolder;
+import io.yec.wula.spring.boot.autoconfigure.properties.WulaConfigProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * WulaAutoConfiguration
+ *
+ * @author baijiu.yec
+ * @since 2022/06/23
+ */
+@ConditionalOnProperty(prefix = "wula.router", name = "enabled", matchIfMissing = true)
+@ConditionalOnResource(resources = "classpath:bizRulesConfig.json")
+@ConditionalOnBean(value = {ExtensionPoint.class, IdentityAssembler.class})
+@EnableConfigurationProperties(value = {
+        WulaConfigProperties.class
+})
+@Configuration(proxyBeanMethods = false)
+public class WulaAutoConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean(IExtensionRouteRuleHolder.class)
+    public IExtensionRouteRuleHolder extensionRouteRuleHolder() {
+        return new GroupExtensionRouteRuleHolder();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(IExtensionRegister.class)
+    public IExtensionRegister extensionRegister(IExtensionRouteRuleHolder extensionRouteRuleHolder) {
+        return new GroupExtensionRegister(extensionRouteRuleHolder);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(ExtensionExecutor.class)
+    @ConditionalOnBean(IdentityAssembler.class)
+    public ExtensionExecutor extensionExecutor(IExtensionRouteRuleHolder extensionRouteRuleHolder, IdentityAssembler identityAssembler) {
+        return new ExtExtensionExecutorImpl(extensionRouteRuleHolder, identityAssembler);
+    }
+
+}

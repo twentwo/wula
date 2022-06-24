@@ -1,0 +1,4 @@
+org.springframework.context.ApplicationListener=\
+  io.yec.wula.spring.boot.autoconfigure.listener.ContextRefreshedEventListener
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  io.yec.wula.spring.boot.autoconfigure.WulaAutoConfiguration

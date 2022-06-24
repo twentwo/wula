@@ -1,0 +1,22 @@
+[
+  {
+    "group": "io.yec.wula.example.extpoint.IOrderRouter",
+    "def": [
+      {
+        "beanName": "newOrderRouter",
+        "extEl": "['businessType'] == 'NEW' && ['discounted'] == false && ['sellerId'] == '618'",
+        "desc": "新品"
+      },
+      {
+        "beanName": "normalOrderRouter",
+        "extEl": "['businessType'] == 'NORMAL' && ['discounted'] == true ",
+        "desc": "普品"
+      },
+      {
+        "beanName": "defaultOrderRouter",
+        "extEl": "['businessType'] == null",
+        "desc": "默认"
+      }
+    ]
+  }
+]

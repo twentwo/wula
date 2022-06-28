@@ -1,6 +1,13 @@
 package io.yec.wula.spring.boot.autoconfigure.utils;
 
 
+import lombok.NonNull;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+
+import java.io.IOException;
+import java.util.Arrays;
+
 /**
  * wula utils
  *
@@ -18,5 +25,22 @@ public class WulaUtils {
      * The prefix of property name of Wula
      */
     public static final String FRESNO_PREFIX = "wula.router";
+
+    /**
+     * match resource exist by locationPattern
+     *
+     * @param locationPattern
+     * @return
+     * @throws IOException
+     */
+    public static boolean resourceExists(@NonNull String locationPattern) throws IOException {
+        Resource[] resources = new PathMatchingResourcePatternResolver().getResources(locationPattern);
+        for (Resource resource : Arrays.asList(resources)) {
+            if (resource.exists()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

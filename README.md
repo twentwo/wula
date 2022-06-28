@@ -21,7 +21,7 @@ maven dependency import
 
 ### bizRulesConfig
 
-define strategy route rules
+define strategy route rules: bizRulesConfig*.json
 
 ```json
 [

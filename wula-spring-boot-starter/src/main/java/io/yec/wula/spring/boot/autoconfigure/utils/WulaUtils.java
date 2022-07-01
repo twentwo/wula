@@ -24,7 +24,7 @@ public class WulaUtils {
     /**
      * The prefix of property name of Wula
      */
-    public static final String FRESNO_PREFIX = "wula.router";
+    public static final String WULA_ROUTER_PREFIX = "wula.router";
 
     /**
      * match resource exist by locationPattern

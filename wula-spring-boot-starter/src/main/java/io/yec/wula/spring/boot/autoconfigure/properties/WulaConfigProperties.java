@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import static io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils.FRESNO_PREFIX;
+import static io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils.WULA_ROUTER_PREFIX;
 
 
 /**
@@ -14,7 +14,7 @@ import static io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils.FRESNO_PREFI
  * @since 2022/04/29
  */
 @Setter @Getter
-@ConfigurationProperties(prefix = FRESNO_PREFIX)
+@ConfigurationProperties(prefix = WULA_ROUTER_PREFIX)
 public class WulaConfigProperties {
 
     private String enabled = "true";

@@ -12,6 +12,12 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * GroupRouteRuleJson
+ *
+ * @author baijiu.yec
+ * @since 2022/06/24
+ */
 @Data
 public class GroupRouteRuleJson {
 

@@ -19,6 +19,24 @@ maven dependency import
 </dependency>
 ```
 
+### Strategy Bean
+
+create different strategy bean with a logical component name
+
+```java
+@Slf4j
+@Component("newOrderRouter")
+public class NewOrderRouter implements IOrderRouter {
+
+    @Override
+    public void wula(OrderEntity orderEntity) {
+        log.info("NewOrderRouter = {}", orderEntity);
+    }
+
+}
+// ...
+```
+
 ### bizRulesConfig
 
 define strategy route rules: bizRulesConfig*.json

@@ -5,6 +5,7 @@ import io.yec.wula.core.extension.ExtensionPoint;
 import io.yec.wula.core.routerule.ExtensionRouteRule;
 import io.yec.wula.core.routerule.GroupExtensionRouteRule;
 import lombok.Data;
+import lombok.NonNull;
 import org.springframework.context.ApplicationContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -33,6 +34,7 @@ public class GroupRouteRuleJson {
             if (!ExtensionPoint.class.isAssignableFrom(extensionObj.getClass())) {
                 throw new ExtException("extension init fail : extension didn't implements ExtensionPoint");
             }
+            ensureMatchGroup(group, extensionObj);
             ExtensionRouteRule extensionRouteRule = new ExtensionRouteRule();
             extensionRouteRule.setExpression(expressionParser.parseExpression(routeRuleDef.getExtEl()));
             extensionRouteRule.setExtensionPoint((ExtensionPoint) extensionObj);
@@ -41,6 +43,23 @@ public class GroupRouteRuleJson {
         groupExtensionRouteRule.setGroup(this.group);
         groupExtensionRouteRule.setExtensionRouteRules(extensionRouteRules);
         return groupExtensionRouteRule;
+    }
+
+    private static void ensureMatchGroup(@NonNull String group, @NonNull Object extensionPointImpl) {
+        Class<?> groupInterface = getClass(group);
+        if (!groupInterface.isAssignableFrom(extensionPointImpl.getClass())) {
+            throw new ExtException("group interface is not exist: " + group);
+        }
+    }
+
+    public static Class<?> getClass(@NonNull String clazzName) {
+        Class<?> groupInterface;
+        try {
+            groupInterface =  Class.forName(clazzName);
+        } catch (ClassNotFoundException exception) {
+            throw new ExtException("group interface is not exist: " + clazzName);
+        }
+        return groupInterface;
     }
 
 }

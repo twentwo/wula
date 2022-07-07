@@ -31,4 +31,17 @@ public class IdentityParam implements Serializable {
      */
     private String sellerId;
 
+    /**
+     * 人种
+     */
+    private RaceEnum raceEnum;
+    /**
+     * 是否歪果仁
+     */
+    private Boolean foreign;
+    /**
+     * 家乡
+     */
+    private String hometown;
+
 }

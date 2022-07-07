@@ -9,8 +9,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * GroupExtensionRegister
@@ -30,12 +31,12 @@ public class GroupExtensionRegister implements IExtensionRegister<GroupExtension
 
     @Override
     public void doRegister(List<String> jsonStr) {
-        List<GroupExtensionRouteRule> extensionRouteRuleList = new ArrayList<>();
+        Map<Class<?>, GroupExtensionRouteRule> extensionRouteRuleGroup = new HashMap<>(128);
         for (String str : jsonStr) {
             List<GroupRouteRuleJson> routeRuleJson = JSONObject.parseArray(str, GroupRouteRuleJson.class);
-            routeRuleJson.forEach(item -> extensionRouteRuleList.add(item.build(applicationContext)));
+            routeRuleJson.forEach(item -> extensionRouteRuleGroup.put(GroupRouteRuleJson.getClass(item.getGroup()), item.build(applicationContext)));
         }
-        extensionRouteRuleHolder.setExtensionRouteRuleList(extensionRouteRuleList);
+        extensionRouteRuleHolder.setExtensionRouteRuleGroup(extensionRouteRuleGroup);
     }
 
     @Override

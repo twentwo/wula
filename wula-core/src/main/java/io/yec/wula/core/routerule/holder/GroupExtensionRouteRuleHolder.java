@@ -1,9 +1,10 @@
 package io.yec.wula.core.routerule.holder;
 
+import io.yec.wula.core.extension.ExtensionPoint;
 import io.yec.wula.core.routerule.GroupExtensionRouteRule;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * GroupExtensionRouteRuleHolder
@@ -11,18 +12,18 @@ import java.util.List;
  * @author baijiu.yec
  * @since 2022/06/23
  */
-public class GroupExtensionRouteRuleHolder implements IExtensionRouteRuleHolder<GroupExtensionRouteRule> {
+public class GroupExtensionRouteRuleHolder implements IExtensionRouteRuleHolder<GroupExtensionRouteRule, ExtensionPoint> {
 
-    private List<GroupExtensionRouteRule> extensionRouteRules = new ArrayList<>();
+    private Map<Class<ExtensionPoint>, GroupExtensionRouteRule> extensionRouteRuleGroup = new HashMap<>();
 
     @Override
-    public List<GroupExtensionRouteRule> getExtensionRouteRuleList() {
-        return this.extensionRouteRules;
+    public Map<Class<ExtensionPoint>, GroupExtensionRouteRule> getExtensionRouteRuleGroup() {
+        return this.extensionRouteRuleGroup;
     }
 
     @Override
-    public void setExtensionRouteRuleList(List<GroupExtensionRouteRule> extensionRouteRuleList) {
-        this.extensionRouteRules = extensionRouteRuleList;
+    public void setExtensionRouteRuleGroup(Map<Class<ExtensionPoint>, GroupExtensionRouteRule> extensionRouteRuleGroup) {
+        this.extensionRouteRuleGroup = extensionRouteRuleGroup;
     }
 
 }

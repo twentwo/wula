@@ -24,6 +24,7 @@ public class IdentityAssemblerImpl implements IdentityAssembler {
         pairs.put("businessType", Objects.nonNull(identityParam.getBusinessType()) ? identityParam.getBusinessType().name() : null);
         pairs.put("discounted", identityParam.getDiscounted());
         pairs.put("sellerId", identityParam.getSellerId());
+        pairs.put("raceEnum", Objects.nonNull(identityParam.getRaceEnum()) ? identityParam.getRaceEnum().name() : null);
         return new Identity(pairs);
     }
 

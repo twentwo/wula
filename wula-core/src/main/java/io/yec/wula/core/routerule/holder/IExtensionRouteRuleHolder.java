@@ -1,8 +1,9 @@
 package io.yec.wula.core.routerule.holder;
 
+import io.yec.wula.core.extension.ExtensionPoint;
 import io.yec.wula.core.routerule.IExtensionRouteRule;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * ExtensionRouteRuleHolder Interface
@@ -10,19 +11,19 @@ import java.util.List;
  * @author baijiu.yec
  * @since 2022/06/23
  */
-public interface IExtensionRouteRuleHolder<T extends IExtensionRouteRule> {
+public interface IExtensionRouteRuleHolder<T extends IExtensionRouteRule, P extends ExtensionPoint> {
 
     /**
      * Fetch
      *
      * @return
      */
-    List<T> getExtensionRouteRuleList();
+    Map<Class<P>, T> getExtensionRouteRuleGroup();
 
     /**
      * Set
      *
-     * @param extensionRouteRuleList
+     * @param extensionRouteRuleGroup
      */
-    void setExtensionRouteRuleList(List<T> extensionRouteRuleList);
+    void setExtensionRouteRuleGroup(Map<Class<P>, T> extensionRouteRuleGroup);
 }

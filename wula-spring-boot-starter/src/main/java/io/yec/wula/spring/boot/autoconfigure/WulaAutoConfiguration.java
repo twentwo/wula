@@ -11,8 +11,10 @@ import io.yec.wula.core.routerule.holder.IExtensionRouteRuleHolder;
 import io.yec.wula.spring.boot.autoconfigure.properties.WulaConfigProperties;
 import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ResourceLoader;
 
 /**
  * WulaAutoConfiguration
@@ -21,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2022/06/23
  */
 @ConditionalOnProperty(prefix = "wula.router", name = "enabled", matchIfMissing = true)
-@ConditionalOnExpression("#{T(io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils).resourceExists('classpath:bizRulesConfig*.json')}")
+@ConditionalOnExpression("#{T(io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils).resourceExists('classpath:bizRulesConfig*.*')}")
 @ConditionalOnBean(value = {ExtensionPoint.class, IdentityAssembler.class})
 @EnableConfigurationProperties(value = {
         WulaConfigProperties.class
@@ -37,8 +39,8 @@ public class WulaAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(IExtensionRegister.class)
-    public IExtensionRegister extensionRegister(IExtensionRouteRuleHolder extensionRouteRuleHolder) {
-        return new GroupExtensionRegister(extensionRouteRuleHolder);
+    public IExtensionRegister extensionRegister(IExtensionRouteRuleHolder extensionRouteRuleHolder, ApplicationContext applicationContext, ResourceLoader resourceLoader) {
+        return new GroupExtensionRegister(extensionRouteRuleHolder, applicationContext, resourceLoader);
     }
 
     @Bean

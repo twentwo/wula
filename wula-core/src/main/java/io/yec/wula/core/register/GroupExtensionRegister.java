@@ -1,13 +1,16 @@
 package io.yec.wula.core.register;
 
-import com.alibaba.fastjson.JSONObject;
-import io.yec.wula.core.config.GroupRouteRuleJson;
+import io.yec.wula.core.config.GroupRouteRuleDef;
+import io.yec.wula.core.config.JsonRuleConfigLoader;
+import io.yec.wula.core.config.RuleConfigLoader;
+import io.yec.wula.core.exception.ExtException;
 import io.yec.wula.core.routerule.GroupExtensionRouteRule;
+import io.yec.wula.core.routerule.IExtensionRouteRule;
 import io.yec.wula.core.routerule.holder.IExtensionRouteRuleHolder;
 import lombok.Setter;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,29 +22,34 @@ import java.util.Map;
  * @author baijiu.yec
  * @since 2022/06/23
  */
-public class GroupExtensionRegister implements IExtensionRegister<GroupExtensionRouteRule>, ApplicationContextAware {
+public class GroupExtensionRegister implements IExtensionRegister<GroupExtensionRouteRule> {
 
+    private final IExtensionRouteRuleHolder extensionRouteRuleHolder;
+    private final ApplicationContext applicationContext;
+    private final ResourceLoader resourceLoader;
     @Setter
-    private IExtensionRouteRuleHolder extensionRouteRuleHolder;
-    private ApplicationContext applicationContext;
+    private RuleConfigLoader[] ruleConfigLoaders = {new JsonRuleConfigLoader()};
 
-    public GroupExtensionRegister(IExtensionRouteRuleHolder extensionRouteRuleHolder) {
+    public GroupExtensionRegister(IExtensionRouteRuleHolder extensionRouteRuleHolder, ApplicationContext applicationContext, ResourceLoader resourceLoader) {
         this.extensionRouteRuleHolder = extensionRouteRuleHolder;
+        this.applicationContext = applicationContext;
+        this.resourceLoader = resourceLoader;
     }
 
     @Override
-    public void doRegister(List<String> jsonStr) {
-        Map<Class<?>, GroupExtensionRouteRule> extensionRouteRuleGroup = new HashMap<>(128);
-        for (String str : jsonStr) {
-            List<GroupRouteRuleJson> routeRuleJson = JSONObject.parseArray(str, GroupRouteRuleJson.class);
-            routeRuleJson.forEach(item -> extensionRouteRuleGroup.put(GroupRouteRuleJson.getClass(item.getGroup()), item.build(applicationContext)));
+    public void doRegister(List<String> locations) {
+        Map<Class<?>, IExtensionRouteRule> extensionRouteRuleGroup = new HashMap<>(128);
+        for (String location : locations) {
+            for (RuleConfigLoader ruleConfigLoader : ruleConfigLoaders) {
+                if (!ruleConfigLoader.canLoadFileExtension(location)) {
+                    throw new ExtException("File extension of config file location '" + location
+                            + "' is not known to any RuleConfigLoader.");
+                }
+                List<GroupRouteRuleDef> routeRuleDefs = ruleConfigLoader.load(location, new PathMatchingResourcePatternResolver(resourceLoader));
+                routeRuleDefs.forEach(routeRuleDef -> extensionRouteRuleGroup.put(GroupRouteRuleDef.getClass(routeRuleDef.getGroup()), routeRuleDef.toRule(applicationContext)));
+            }
         }
         extensionRouteRuleHolder.setExtensionRouteRuleGroup(extensionRouteRuleGroup);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
     }
 
 }

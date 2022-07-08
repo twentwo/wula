@@ -24,7 +24,6 @@ public class ContextRefreshedEventListener implements ApplicationListener<Contex
      */
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        //判断是否执行过，执行过则不再执行
         ApplicationContext applicationContext = event.getApplicationContext();
         if (applicationContext.getParent() == null) {
             String config = applicationContext.getBean(WulaConfigProperties.class).getConfig();

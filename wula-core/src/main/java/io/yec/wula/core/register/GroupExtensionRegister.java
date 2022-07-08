@@ -15,6 +15,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * GroupExtensionRegister
@@ -40,14 +41,18 @@ public class GroupExtensionRegister implements IExtensionRegister<GroupExtension
     public void doRegister(List<String> locations) {
         Map<Class<?>, IExtensionRouteRule> extensionRouteRuleGroup = new HashMap<>(128);
         for (String location : locations) {
+            RuleConfigLoader selectedRuleConfigLoader = null;
             for (RuleConfigLoader ruleConfigLoader : ruleConfigLoaders) {
-                if (!ruleConfigLoader.canLoadFileExtension(location)) {
-                    throw new ExtException("File extension of config file location '" + location
-                            + "' is not known to any RuleConfigLoader.");
+                if (ruleConfigLoader.canLoadFileExtension(location)) {
+                    selectedRuleConfigLoader = ruleConfigLoader;
                 }
-                List<GroupRouteRuleDef> routeRuleDefs = ruleConfigLoader.load(location, new PathMatchingResourcePatternResolver(resourceLoader));
-                routeRuleDefs.forEach(routeRuleDef -> extensionRouteRuleGroup.put(GroupRouteRuleDef.getClass(routeRuleDef.getGroup()), routeRuleDef.toRule(applicationContext)));
             }
+            if (Objects.isNull(selectedRuleConfigLoader)) {
+                throw new ExtException("File extension of config file location '" + location
+                        + "' is not known to any RuleConfigLoader.");
+            }
+            List<GroupRouteRuleDef> routeRuleDefs = selectedRuleConfigLoader.load(location, new PathMatchingResourcePatternResolver(resourceLoader));
+            routeRuleDefs.forEach(routeRuleDef -> extensionRouteRuleGroup.put(GroupRouteRuleDef.getClass(routeRuleDef.getGroup()), routeRuleDef.toRule(applicationContext)));
         }
         extensionRouteRuleHolder.setExtensionRouteRuleGroup(extensionRouteRuleGroup);
     }

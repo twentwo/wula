@@ -1,8 +1,8 @@
 package io.yec.wula.core.register;
 
 import io.yec.wula.core.config.GroupRouteRuleDef;
-import io.yec.wula.core.config.JsonRuleConfigLoader;
-import io.yec.wula.core.config.RuleConfigLoader;
+import io.yec.wula.core.config.loader.JsonRuleConfigLoader;
+import io.yec.wula.core.config.loader.RuleConfigLoader;
 import io.yec.wula.core.exception.ExtException;
 import io.yec.wula.core.routerule.GroupExtensionRouteRule;
 import io.yec.wula.core.routerule.IExtensionRouteRule;

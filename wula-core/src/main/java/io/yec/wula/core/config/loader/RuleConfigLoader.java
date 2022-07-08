@@ -1,5 +1,6 @@
-package io.yec.wula.core.config;
+package io.yec.wula.core.config.loader;
 
+import io.yec.wula.core.config.GroupRouteRuleDef;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.StringUtils;
 

@@ -43,7 +43,7 @@ public class JsonRuleConfigLoader implements RuleConfigLoader {
                 throw new ExtException("extension config init exception :" + e.getMessage());
             }
         }
-        List<GroupRouteRuleDef> groupRouteRuleDefs = new ArrayList<>(256);
+        List<GroupRouteRuleDef> groupRouteRuleDefs = new ArrayList<>(64);
         ruleDefs.forEach(ruleDef -> groupRouteRuleDefs.addAll(JSONObject.parseArray(ruleDef, GroupRouteRuleDef.class)));
         return groupRouteRuleDefs;
     }

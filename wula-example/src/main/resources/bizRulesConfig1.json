@@ -1,0 +1,12 @@
+[
+  {
+    "group": "io.yec.wula.example.extpoint.IPersonRouter",
+    "def": [
+      {
+        "beanName": "yellowRouter",
+        "extEl": "['raceEnum'] == 'YELLOW'",
+        "desc": "黄种人"
+      }
+    ]
+  }
+]

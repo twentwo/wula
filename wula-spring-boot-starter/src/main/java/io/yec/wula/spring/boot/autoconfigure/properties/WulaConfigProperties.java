@@ -18,6 +18,6 @@ import static io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils.WULA_ROUTER_
 public class WulaConfigProperties {
 
     private String enabled = "true";
-    private String config = "classpath:bizRulesConfig*.json";
+    private String config = "classpath:bizRulesConfig*.json,classpath:bizRulesConfig*.yml";
 
 }

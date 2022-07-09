@@ -3,6 +3,7 @@ package io.yec.wula.core.register;
 import io.yec.wula.core.config.GroupRouteRuleDef;
 import io.yec.wula.core.config.loader.JsonRuleConfigLoader;
 import io.yec.wula.core.config.loader.RuleConfigLoader;
+import io.yec.wula.core.config.loader.YamlRuleConfigLoader;
 import io.yec.wula.core.exception.ExtException;
 import io.yec.wula.core.routerule.GroupExtensionRouteRule;
 import io.yec.wula.core.routerule.IExtensionRouteRule;
@@ -29,7 +30,7 @@ public class GroupExtensionRegister implements IExtensionRegister<GroupExtension
     private final ApplicationContext applicationContext;
     private final ResourceLoader resourceLoader;
     @Setter
-    private RuleConfigLoader[] ruleConfigLoaders = {new JsonRuleConfigLoader()};
+    private RuleConfigLoader[] ruleConfigLoaders = {new JsonRuleConfigLoader(), new YamlRuleConfigLoader()};
 
     public GroupExtensionRegister(IExtensionRouteRuleHolder extensionRouteRuleHolder, ApplicationContext applicationContext, ResourceLoader resourceLoader) {
         this.extensionRouteRuleHolder = extensionRouteRuleHolder;
@@ -45,6 +46,7 @@ public class GroupExtensionRegister implements IExtensionRegister<GroupExtension
             for (RuleConfigLoader ruleConfigLoader : ruleConfigLoaders) {
                 if (ruleConfigLoader.canLoadFileExtension(location)) {
                     selectedRuleConfigLoader = ruleConfigLoader;
+                    break;
                 }
             }
             if (Objects.isNull(selectedRuleConfigLoader)) {

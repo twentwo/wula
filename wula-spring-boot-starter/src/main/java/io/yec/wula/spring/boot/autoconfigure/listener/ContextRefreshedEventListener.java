@@ -31,6 +31,11 @@ public class ContextRefreshedEventListener implements ApplicationListener<Contex
         }
     }
 
+    /**
+     * parse config to list
+     * @param config
+     * @return
+     */
     private List<String> parseConfig(String config) {
         List<String> configLocations = Arrays.asList(StringUtils.trimArrayElements(StringUtils.commaDelimitedListToStringArray(config)));
         Collections.reverse(configLocations);

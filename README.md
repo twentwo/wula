@@ -39,7 +39,9 @@ public class NewOrderRouter implements IOrderRouter {
 
 ### bizRulesConfig
 
-define strategy route rules: bizRulesConfig*.json
+define strategy route rules, support both: 
+- bizRulesConfig*.json
+- bizRulesConfig*.yml
 
 ```json
 [
@@ -64,6 +66,28 @@ define strategy route rules: bizRulesConfig*.json
     ]
   }
 ]
+```
+
+or
+
+```yaml
+---
+- group: io.yec.wula.example.extpoint.IOrderRouter
+  def:
+    - beanName: newOrderRouter
+      extEl: "['businessType'] == 'NEW' && ['discounted'] == false && ['sellerId'] == '618'"
+      desc: 新品
+    - beanName: normalOrderRouter
+      extEl: "['businessType'] == 'NORMAL' && ['discounted'] == true"
+      desc: 普品
+    - beanName: defaultOrderRouter
+      extEl: "['businessType'] == null"
+      desc: 默认
+- group: io.yec.wula.example.extpoint.IPersonRouter
+  def:
+    - beanName: yellowRouter
+      extEl: "['raceEnum'] == 'YELLOW'"
+      desc: 黄种人
 ```
 
 ### ExtensionExecutor

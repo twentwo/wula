@@ -16,13 +16,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 
+import static io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils.WULA_ROUTER_PREFIX;
+
 /**
  * WulaAutoConfiguration
  *
  * @author baijiu.yec
  * @since 2022/06/23
  */
-@ConditionalOnProperty(prefix = "wula.router", name = "enabled", matchIfMissing = true)
+@ConditionalOnProperty(prefix = WULA_ROUTER_PREFIX, name = "enabled", matchIfMissing = true)
 @ConditionalOnExpression("#{T(io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils).resourceExists('classpath:bizRulesConfig*.*')}")
 @ConditionalOnBean(value = {ExtensionPoint.class, IdentityAssembler.class})
 @EnableConfigurationProperties(value = {

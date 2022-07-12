@@ -6,7 +6,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * wula utils
@@ -35,12 +35,7 @@ public class WulaUtils {
      */
     public static boolean resourceExists(@NonNull String locationPattern) throws IOException {
         Resource[] resources = new PathMatchingResourcePatternResolver().getResources(locationPattern);
-        for (Resource resource : Arrays.asList(resources)) {
-            if (resource.exists()) {
-                return true;
-            }
-        }
-        return false;
+        return Stream.of(resources).anyMatch(resource -> resource.exists());
     }
 
 }

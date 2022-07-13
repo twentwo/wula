@@ -25,7 +25,7 @@ create different strategy bean with a logical component name
 
 ```java
 @Slf4j
-@Component("newOrderRouter")
+@ExtPoint("newOrderRouter")
 public class NewOrderRouter implements IOrderRouter {
 
     @Override
@@ -88,6 +88,28 @@ or
     - beanName: yellowRouter
       extEl: "['raceEnum'] == 'YELLOW'"
       desc: 黄种人
+```
+
+### IdentityAssembler
+
+define identityAssembler
+
+```java
+@Component("identityAssembler")
+public class IdentityAssemblerImpl implements IdentityAssembler {
+
+    @Override
+    public Identity assemble(Object object) {
+        IdentityParam identityParam = (IdentityParam) object;
+        Map<String, Object> pairs = new HashMap<>(8);
+        pairs.put("businessType", Objects.nonNull(identityParam.getBusinessType()) ? identityParam.getBusinessType().name() : null);
+        pairs.put("discounted", identityParam.getDiscounted());
+        pairs.put("sellerId", identityParam.getSellerId());
+        pairs.put("raceEnum", Objects.nonNull(identityParam.getRaceEnum()) ? identityParam.getRaceEnum().name() : null);
+        return new Identity(pairs);
+    }
+
+}
 ```
 
 ### ExtensionExecutor

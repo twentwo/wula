@@ -11,19 +11,19 @@ import java.util.Map;
  * @author baijiu.yec
  * @since 2022/06/23
  */
-public interface IExtensionRouteRuleHolder<T extends IExtensionRouteRule, P extends ExtensionPoint> {
+public interface IExtensionRouteRuleHolder<ExtP extends ExtensionPoint, Rule extends IExtensionRouteRule> {
 
     /**
      * Fetch
-     *
+     * @param targetClz
      * @return
      */
-    Map<Class<P>, T> getExtensionRouteRuleGroup();
+    Rule getExtensionRouteRule(Class<ExtP> targetClz);
 
     /**
      * Set
      *
-     * @param extensionRouteRuleGroup
+     * @param extensionRouteRuleMap
      */
-    void setExtensionRouteRuleGroup(Map<Class<P>, T> extensionRouteRuleGroup);
+    void setExtensionRouteRuleMap(Map<Class<ExtP>, Rule> extensionRouteRuleMap);
 }

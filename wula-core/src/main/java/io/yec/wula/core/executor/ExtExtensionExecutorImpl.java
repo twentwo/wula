@@ -8,7 +8,6 @@ import io.yec.wula.core.routerule.IExtensionRouteRule;
 import io.yec.wula.core.routerule.holder.IExtensionRouteRuleHolder;
 import lombok.Setter;
 
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -44,18 +43,17 @@ public class ExtExtensionExecutorImpl extends AbstractExtensionExecutor {
      *
      * @param targetClz
      * @param entity
-     * @param <Ext>
+     * @param <ExtP>
      * @return
      */
-    protected <Ext> Ext locateExtension(Class<Ext> targetClz, Object entity) {
+    protected <ExtP> ExtP locateExtension(Class<ExtP> targetClz, Object entity) {
         checkNull(entity);
         Identity identity = entityIdentityAssembler.assemble(entity);
-        Map<Class, IExtensionRouteRule> extensionRouteRuleGroup = extensionRouteRuleHolder.getExtensionRouteRuleGroup();
-        IExtensionRouteRule extensionRouteRule = extensionRouteRuleGroup.get(targetClz);
+        IExtensionRouteRule extensionRouteRule = extensionRouteRuleHolder.getExtensionRouteRule(targetClz);
         if (Objects.nonNull(extensionRouteRule)) {
             ExtensionPoint extensionPoint = extensionRouteRule.match(targetClz, identity);
             if (Objects.nonNull(extensionPoint)) {
-                return (Ext) extensionPoint;
+                return (ExtP) extensionPoint;
             }
         }
         throw new ExtException("locate ext fail, not extension match");

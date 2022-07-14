@@ -12,18 +12,18 @@ import java.util.Map;
  * @author baijiu.yec
  * @since 2022/06/23
  */
-public class GroupExtensionRouteRuleHolder implements IExtensionRouteRuleHolder<GroupExtensionRouteRule, ExtensionPoint> {
+public class GroupExtensionRouteRuleHolder implements IExtensionRouteRuleHolder<ExtensionPoint, GroupExtensionRouteRule> {
 
-    private Map<Class<ExtensionPoint>, GroupExtensionRouteRule> extensionRouteRuleGroup = new HashMap<>();
+    private Map<Class<ExtensionPoint>, GroupExtensionRouteRule> extensionRouteRuleMap = new HashMap<>();
 
     @Override
-    public Map<Class<ExtensionPoint>, GroupExtensionRouteRule> getExtensionRouteRuleGroup() {
-        return this.extensionRouteRuleGroup;
+    public GroupExtensionRouteRule getExtensionRouteRule(Class<ExtensionPoint> targetClz) {
+        return extensionRouteRuleMap.get(targetClz);
     }
 
     @Override
-    public void setExtensionRouteRuleGroup(Map<Class<ExtensionPoint>, GroupExtensionRouteRule> extensionRouteRuleGroup) {
-        this.extensionRouteRuleGroup = extensionRouteRuleGroup;
+    public void setExtensionRouteRuleMap(Map<Class<ExtensionPoint>, GroupExtensionRouteRule> extensionRouteRuleMap) {
+        this.extensionRouteRuleMap = extensionRouteRuleMap;
     }
 
 }

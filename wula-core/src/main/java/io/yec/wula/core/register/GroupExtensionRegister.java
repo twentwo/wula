@@ -56,7 +56,7 @@ public class GroupExtensionRegister implements IExtensionRegister<GroupExtension
             List<GroupRouteRuleDef> routeRuleDefs = selectedRuleConfigLoader.load(location, new PathMatchingResourcePatternResolver(resourceLoader));
             routeRuleDefs.forEach(routeRuleDef -> extensionRouteRuleGroup.put(GroupRouteRuleDef.getClass(routeRuleDef.getGroup()), routeRuleDef.toRule(applicationContext)));
         }
-        extensionRouteRuleHolder.setExtensionRouteRuleGroup(extensionRouteRuleGroup);
+        extensionRouteRuleHolder.setExtensionRouteRuleMap(extensionRouteRuleGroup);
     }
 
 }

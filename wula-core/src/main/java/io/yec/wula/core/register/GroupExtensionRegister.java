@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.util.ClassUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +55,7 @@ public class GroupExtensionRegister implements IExtensionRegister<GroupExtension
                         + "' is not known to any RuleConfigLoader.");
             }
             List<GroupRouteRuleDef> routeRuleDefs = selectedRuleConfigLoader.load(location, new PathMatchingResourcePatternResolver(resourceLoader));
-            routeRuleDefs.forEach(routeRuleDef -> extensionRouteRuleGroup.put(GroupRouteRuleDef.getClass(routeRuleDef.getGroup()), routeRuleDef.toRule(applicationContext)));
+            routeRuleDefs.forEach(routeRuleDef -> extensionRouteRuleGroup.put(ClassUtils.resolveClassName(routeRuleDef.getGroup(), null), routeRuleDef.toRule(applicationContext)));
         }
         extensionRouteRuleHolder.setExtensionRouteRuleMap(extensionRouteRuleGroup);
     }

@@ -10,6 +10,7 @@ import lombok.NonNull;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,20 +48,10 @@ public class GroupRouteRuleDef<E extends IExtensionRouteRule> {
     }
 
     private static void ensureMatchGroup(@NonNull String group, @NonNull Object extensionPointImpl) {
-        Class<?> groupInterface = getClass(group);
+        Class<?> groupInterface = ClassUtils.resolveClassName(group, null);
         if (!groupInterface.isAssignableFrom(extensionPointImpl.getClass())) {
             throw new ExtException("group interface is not exist: " + group);
         }
-    }
-
-    public static Class<?> getClass(@NonNull String clazzName) {
-        Class<?> groupInterface;
-        try {
-            groupInterface =  Class.forName(clazzName);
-        } catch (ClassNotFoundException exception) {
-            throw new ExtException("group interface is not exist: " + clazzName);
-        }
-        return groupInterface;
     }
 
 }

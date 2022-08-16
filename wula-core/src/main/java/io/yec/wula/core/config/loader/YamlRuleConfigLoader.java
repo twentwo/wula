@@ -17,7 +17,7 @@ import java.util.List;
  * @since 2022/07/08
  */
 @Slf4j
-public class YamlRuleConfigLoader implements RuleConfigLoader {
+public class YamlRuleConfigLoader implements RuleConfigLoader<GroupRouteRuleDef> {
 
     private static ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory())
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)

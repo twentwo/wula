@@ -16,7 +16,7 @@ import java.util.List;
  * @since 2022/07/08
  */
 @Slf4j
-public class JsonRuleConfigLoader implements RuleConfigLoader {
+public class JsonRuleConfigLoader implements RuleConfigLoader<GroupRouteRuleDef> {
 
     private static ObjectMapper objectMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)

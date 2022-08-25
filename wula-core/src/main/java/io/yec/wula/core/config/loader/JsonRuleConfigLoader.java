@@ -24,7 +24,7 @@ public class JsonRuleConfigLoader implements RuleConfigLoader<GroupRouteRuleDef>
 
     @Override
     public String[] getFileExtensions() {
-        return new String[] { "json"};
+        return new String[] {"json"};
     }
 
     @Override

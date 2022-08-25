@@ -25,7 +25,7 @@ public class YamlRuleConfigLoader implements RuleConfigLoader<GroupRouteRuleDef>
 
     @Override
     public String[] getFileExtensions() {
-        return new String[] { "yml", "yaml" };
+        return new String[] {"yml", "yaml"};
     }
 
     @Override

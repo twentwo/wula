@@ -2,12 +2,14 @@ package io.yec.wula.core.config;
 
 import io.yec.wula.core.exception.ExtException;
 import io.yec.wula.core.extension.ExtensionPoint;
+import io.yec.wula.core.extension.annotation.ExtPoint;
 import io.yec.wula.core.routerule.ExtensionRouteRule;
 import io.yec.wula.core.routerule.GroupExtensionRouteRule;
 import io.yec.wula.core.routerule.IExtensionRouteRule;
 import lombok.Data;
 import lombok.NonNull;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.util.ClassUtils;
@@ -35,6 +37,9 @@ public class GroupRouteRuleDef<E extends IExtensionRouteRule> {
             Object extensionObj = beanFactory.getBean(routeRuleDef.getBeanName());
             if (!ExtensionPoint.class.isAssignableFrom(extensionObj.getClass())) {
                 throw new ExtException("extension init fail : extension didn't implements ExtensionPoint");
+            }
+            if (!AnnotationUtils.isCandidateClass(extensionObj.getClass(), ExtPoint.class)) {
+                throw new ExtException("extension init fail : extension didn't annotated by  @ExtPoint");
             }
             ensureMatchGroup(group, extensionObj);
             ExtensionRouteRule extensionRouteRule = new ExtensionRouteRule();

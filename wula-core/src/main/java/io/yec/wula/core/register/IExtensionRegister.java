@@ -15,7 +15,7 @@ public interface IExtensionRegister<T extends IExtensionRouteRule> {
     /**
      * parse router json and register to the IExtensionRouteRuleHolder
      *
-     * @param jsonStr
+     * @param locations
      */
-    void doRegister(List<String> jsonStr);
+    void doRegister(List<String> locations);
 }

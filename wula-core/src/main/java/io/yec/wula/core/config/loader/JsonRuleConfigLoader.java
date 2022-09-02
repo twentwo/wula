@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 public class JsonRuleConfigLoader implements RuleConfigLoader<GroupRouteRuleDef> {
 
-    private static ObjectMapper objectMapper = new ObjectMapper()
+    private static ObjectMapper jsonToObjectMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
 
@@ -29,7 +29,7 @@ public class JsonRuleConfigLoader implements RuleConfigLoader<GroupRouteRuleDef>
 
     @Override
     public List<GroupRouteRuleDef> load(@NonNull String location, @NonNull ResourcePatternResolver resourcePatternResolver) {
-        return loadAndParseRuleConfigResources(location, resourcePatternResolver, () -> objectMapper);
+        return loadAndParseRuleConfigResources(location, resourcePatternResolver, () -> jsonToObjectMapper);
     }
 
 }

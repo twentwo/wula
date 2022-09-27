@@ -19,18 +19,18 @@ import java.util.List;
 @Slf4j
 public class YamlRuleConfigLoader implements RuleConfigLoader<GroupRouteRuleDef> {
 
-    private static ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory())
+    private static ObjectMapper yamlToObjectMapper = new ObjectMapper(new YAMLFactory())
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
 
     @Override
     public String[] getFileExtensions() {
-        return new String[] { "yml", "yaml" };
+        return new String[] {"yml", "yaml"};
     }
 
     @Override
     public List<GroupRouteRuleDef> load(@NonNull String location, @NonNull ResourcePatternResolver resourcePatternResolver) {
-        return loadAndParseRuleConfigResources(location, resourcePatternResolver, () -> objectMapper);
+        return loadAndParseRuleConfigResources(location, resourcePatternResolver, () -> yamlToObjectMapper);
     }
 
 }

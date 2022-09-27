@@ -1,6 +1,6 @@
 package io.yec.wula.example.extpoint;
 
-import io.yec.wula.core.annotation.ExtPoint;
+import io.yec.wula.core.extension.annotation.ExtPoint;
 import io.yec.wula.example.entity.PersonEntity;
 import lombok.extern.slf4j.Slf4j;
 

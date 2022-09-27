@@ -2,6 +2,8 @@
 
 A Strategy Route Framework
 
+- original inspiration: https://github.com/alibaba/COLA.git
+
 ## Usage
 
 spring-boot application support

@@ -34,12 +34,12 @@ import static io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils.*;
  * @author baijiu.yec
  * @since 2022/06/23
  */
-@ConditionalOnProperty(prefix = WULA_ROUTER_PREFIX, name = "enabled", matchIfMissing = true)
-@ConditionalOnExpression("#{T(io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils).resourceExists('classpath:bizRulesConfig*.*')}")
-@ConditionalOnBean(value = {IdentityAssembler.class})
 @EnableConfigurationProperties(value = {
         WulaConfigProperties.class
 })
+@ConditionalOnProperty(prefix = WULA_ROUTER_PREFIX, name = "enabled", matchIfMissing = true)
+@ConditionalOnExpression("#{T(io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils).resourceExists('classpath:bizRulesConfig*.*')}")
+@ConditionalOnBean(value = {IdentityAssembler.class})
 @Configuration(proxyBeanMethods = false)
 public class WulaAutoConfiguration {
 

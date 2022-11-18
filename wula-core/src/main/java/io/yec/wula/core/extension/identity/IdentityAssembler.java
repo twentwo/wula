@@ -11,8 +11,8 @@ public interface IdentityAssembler {
     /**
      * assemble route identity by biz info
      *
-     * @param object
+     * @param bizIdentity
      * @return
      */
-    Identity assemble(Object object);
+    Identity assemble(BizIdentity bizIdentity);
 }

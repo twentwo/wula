@@ -1,10 +1,15 @@
 package io.yec.wula.example.identity;
 
 
+import io.yec.wula.core.extension.identity.BizIdentity;
+import io.yec.wula.core.extension.identity.Identity;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * ext point identity param
@@ -14,9 +19,7 @@ import java.io.Serializable;
  */
 @Getter
 @Builder
-public class IdentityParam implements Serializable {
-
-    private static final long serialVersionUID = -8723365298228222705L;
+public class IdentityParam implements BizIdentity {
 
     /**
      * 业务类型
@@ -43,5 +46,17 @@ public class IdentityParam implements Serializable {
      * 家乡
      */
     private String hometown;
+
+    @Override
+    public Identity toIdentity() {
+        Map<String, Object> pairs = new HashMap<>(64);
+        pairs.put("businessType", Objects.nonNull(this.getBusinessType()) ? this.getBusinessType().name() : null);
+        pairs.put("discounted", this.getDiscounted());
+        pairs.put("sellerId", this.getSellerId());
+        pairs.put("raceEnum", Objects.nonNull(this.getRaceEnum()) ? this.getRaceEnum().name() : null);
+        pairs.put("foreign", this.getForeign());
+        pairs.put("hometown", this.getHometown());
+        return new Identity(pairs);
+    }
 
 }

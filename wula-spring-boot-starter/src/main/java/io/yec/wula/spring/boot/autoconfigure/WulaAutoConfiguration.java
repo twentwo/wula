@@ -1,10 +1,13 @@
 package io.yec.wula.spring.boot.autoconfigure;
 
+import io.yec.wula.core.config.cache.ICache;
+import io.yec.wula.core.config.cache.SimpleExtensionRouteRuleCache;
 import io.yec.wula.core.executor.ExtExtensionExecutorImpl;
 import io.yec.wula.core.executor.ExtensionExecutor;
 import io.yec.wula.core.extension.ExtPointBeanDefinitionRegistryPostProcessor;
 import io.yec.wula.core.extension.ExtensionPoint;
 import io.yec.wula.core.extension.identity.IdentityAssembler;
+import io.yec.wula.core.extension.identity.IdentityAssemblerImpl;
 import io.yec.wula.core.register.GroupExtensionRegister;
 import io.yec.wula.core.register.IExtensionRegister;
 import io.yec.wula.core.routerule.holder.GroupExtensionRouteRuleHolder;
@@ -39,7 +42,6 @@ import static io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils.*;
 })
 @ConditionalOnProperty(prefix = WULA_ROUTER_PREFIX, name = "enabled", matchIfMissing = true)
 @ConditionalOnExpression("#{T(io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils).resourceExists('classpath:bizRulesConfig*.*')}")
-@ConditionalOnBean(value = {IdentityAssembler.class})
 @Configuration(proxyBeanMethods = false)
 public class WulaAutoConfiguration {
 
@@ -88,10 +90,23 @@ public class WulaAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(ExtensionExecutor.class)
+    @ConditionalOnMissingBean(ICache.class)
     @ConditionalOnBean(IExtensionRouteRuleHolder.class)
-    public ExtensionExecutor extensionExecutor(IExtensionRouteRuleHolder extensionRouteRuleHolder, IdentityAssembler identityAssembler) {
-        return new ExtExtensionExecutorImpl(extensionRouteRuleHolder, identityAssembler);
+    public ICache extensionCache() {
+        return new SimpleExtensionRouteRuleCache(true);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(IdentityAssembler.class)
+    public IdentityAssembler identityAssembler() {
+        return new IdentityAssemblerImpl();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(ExtensionExecutor.class)
+    @ConditionalOnBean({IExtensionRouteRuleHolder.class, ICache.class, IdentityAssembler.class})
+    public ExtensionExecutor extensionExecutor(IExtensionRouteRuleHolder extensionRouteRuleHolder, IdentityAssembler identityAssembler, ICache cache) {
+        return new ExtExtensionExecutorImpl(extensionRouteRuleHolder, identityAssembler, cache);
     }
 
 }

@@ -1,5 +1,7 @@
 package io.yec.wula.core.executor;
 
+import io.yec.wula.core.extension.identity.BizIdentity;
+
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -14,16 +16,16 @@ public abstract class AbstractExtensionExecutor implements ExtensionExecutor {
     /**
      * Execute extension with Response
      *
+     * @param <R>         Response Type
+     * @param <ExtP>      Parameter Type
      * @param targetClz   extpoint interface
      * @param entity      biz entity
      * @param exeFunction extpoint invoke method
-     * @param <R>         Response Type
-     * @param <T>         Parameter Type
      * @return extension invoke result
      */
     @Override
-    public <R, T> R execute(Class<T> targetClz, Object entity, Function<T, R> exeFunction) {
-        T component = locateComponent(targetClz, entity);
+    public <R, ExtP> R execute(Class<ExtP> targetClz, BizIdentity entity, Function<ExtP, R> exeFunction) {
+        ExtP component = locateComponent(targetClz, entity);
         return exeFunction.apply(component);
     }
 
@@ -34,11 +36,11 @@ public abstract class AbstractExtensionExecutor implements ExtensionExecutor {
      * @param targetClz   extpoint interface
      * @param entity      biz entity
      * @param exeFunction extpoint invoke method
-     * @param <T>         Parameter Type
+     * @param <ExtP>      Parameter Type
      */
     @Override
-    public <T> void executeVoid(Class<T> targetClz, Object entity, Consumer<T> exeFunction) {
-        T component = locateComponent(targetClz, entity);
+    public <ExtP> void executeVoid(Class<ExtP> targetClz, BizIdentity entity, Consumer<ExtP> exeFunction) {
+        ExtP component = locateComponent(targetClz, entity);
         exeFunction.accept(component);
     }
 
@@ -47,10 +49,9 @@ public abstract class AbstractExtensionExecutor implements ExtensionExecutor {
      * locate ext point implements
      *
      * @param targetClz extpoint interface
-     * @param entity    biz entity
-     * @param <C>
+     * @param bizIdentity biz entity
+     * @param <ExtP>
      * @return ext point implement
      */
-    protected abstract <C> C locateComponent(Class<C> targetClz, Object entity);
-
+    protected abstract <ExtP> ExtP locateComponent(Class<ExtP> targetClz, BizIdentity bizIdentity);
 }

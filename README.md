@@ -92,22 +92,51 @@ or
       desc: 黄种人
 ```
 
-### IdentityAssembler
+### BizIdentity
 
-define identityAssembler
+define BizIdentity
 
 ```java
-@Component("identityAssembler")
-public class IdentityAssemblerImpl implements IdentityAssembler {
+@Getter
+@Builder
+public class IdentityParam implements BizIdentity {
+
+    /**
+     * 业务类型
+     */
+    private BusinessTypeEnum businessType;
+    /**
+     * 是否促销
+     */
+    private Boolean discounted;
+    /**
+     * 卖家id
+     */
+    private String sellerId;
+
+    /**
+     * 人种
+     */
+    private RaceEnum raceEnum;
+    /**
+     * 是否歪果仁
+     */
+    private Boolean foreign;
+    /**
+     * 家乡
+     */
+    private String hometown;
+
 
     @Override
-    public Identity assemble(Object object) {
-        IdentityParam identityParam = (IdentityParam) object;
-        Map<String, Object> pairs = new HashMap<>(8);
-        pairs.put("businessType", Objects.nonNull(identityParam.getBusinessType()) ? identityParam.getBusinessType().name() : null);
-        pairs.put("discounted", identityParam.getDiscounted());
-        pairs.put("sellerId", identityParam.getSellerId());
-        pairs.put("raceEnum", Objects.nonNull(identityParam.getRaceEnum()) ? identityParam.getRaceEnum().name() : null);
+    public Identity toIdentity() {
+        Map<String, Object> pairs = new HashMap<>(64);
+        pairs.put("businessType", Objects.nonNull(this.getBusinessType()) ? this.getBusinessType().name() : null);
+        pairs.put("discounted", this.getDiscounted());
+        pairs.put("sellerId", this.getSellerId());
+        pairs.put("raceEnum", Objects.nonNull(this.getRaceEnum()) ? this.getRaceEnum().name() : null);
+        pairs.put("foreign", this.getForeign());
+        pairs.put("hometown", this.getHometown());
         return new Identity(pairs);
     }
 

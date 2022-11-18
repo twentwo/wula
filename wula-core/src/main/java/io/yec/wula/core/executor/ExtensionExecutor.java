@@ -1,5 +1,7 @@
 package io.yec.wula.core.executor;
 
+import io.yec.wula.core.extension.identity.BizIdentity;
+
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -11,7 +13,8 @@ import java.util.function.Function;
  */
 public interface ExtensionExecutor {
 
-    <R, T> R execute(Class<T> targetClz, Object entity, Function<T, R> exeFunction);
+    <R, ExtP> R execute(Class<ExtP> targetClz, BizIdentity entity, Function<ExtP, R> exeFunction);
+
 
     /**
      * Execute extensions without Response
@@ -19,8 +22,7 @@ public interface ExtensionExecutor {
      * @param targetClz   extpoint interface
      * @param entity      biz entity
      * @param exeFunction extpoint invoke method
-     * @param <T>         Parameter Type
+     * @param <ExtP>      Parameter Type
      */
-    <T> void executeVoid(Class<T> targetClz, Object entity, Consumer<T> exeFunction);
-
+    <ExtP> void executeVoid(Class<ExtP> targetClz, BizIdentity entity, Consumer<ExtP> exeFunction);
 }

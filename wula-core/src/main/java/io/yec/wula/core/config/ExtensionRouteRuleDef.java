@@ -14,4 +14,8 @@ public class ExtensionRouteRuleDef {
     String extEl;
     String beanName;
     String desc;
+    /**
+     * order define
+     */
+    Integer order;
 }

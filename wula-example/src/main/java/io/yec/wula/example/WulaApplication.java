@@ -1,5 +1,6 @@
 package io.yec.wula.example;
 
+import io.yec.wula.core.config.cache.ICache;
 import io.yec.wula.core.executor.ExtensionExecutor;
 import io.yec.wula.example.entity.OrderEntity;
 import io.yec.wula.example.entity.PersonEntity;
@@ -9,6 +10,7 @@ import io.yec.wula.example.identity.IdentityParam;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.util.Assert;
 
 /**
  * WulaApplication
@@ -23,6 +25,7 @@ public class WulaApplication {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(WulaApplication.class, args);
         ExtensionExecutor extensionExecutor = applicationContext.getBean(ExtensionExecutor.class);
         OrderEntity newOrderEntity = OrderEntity.createNewOrderEntity();
+        for (int i = 0; i < Integer.SIZE; i++) {
         extensionExecutor.executeVoid(IOrderRouter.class,
                 IdentityParam.builder()
                         .businessType(newOrderEntity.getBusinessType())
@@ -30,6 +33,7 @@ public class WulaApplication {
                         .sellerId("618")
                         .build(),
                 orderRouter -> orderRouter.wula(newOrderEntity));
+        }
 
         PersonEntity yellowPersonEntity = PersonEntity.createYellowPersonEntity();
         String name = extensionExecutor.execute(IPersonRouter.class,
@@ -37,7 +41,11 @@ public class WulaApplication {
                         .raceEnum(yellowPersonEntity.getRaceEnum())
                         .build(),
                 personRouter -> personRouter.desc(yellowPersonEntity));
-        assert yellowPersonEntity.toString().equals(name);
+        Assert.isTrue(yellowPersonEntity.toString().equals(name), "not equals");
+
+        ICache cache = applicationContext.getBean(ICache.class);
+        System.out.println(cache.record());
+
     }
 
 }

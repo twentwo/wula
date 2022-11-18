@@ -1,5 +1,7 @@
 package io.yec.wula.core.extension.identity;
 
+import lombok.ToString;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -9,6 +11,7 @@ import java.util.Map;
  * @author baijiu.yec
  * @since 2022/06/23
  */
+@ToString
 public class Identity {
 
     Map<String, Object> pairs;

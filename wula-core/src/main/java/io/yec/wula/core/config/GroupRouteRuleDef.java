@@ -45,10 +45,12 @@ public class GroupRouteRuleDef<E extends IExtensionRouteRule> {
             ExtensionRouteRule extensionRouteRule = new ExtensionRouteRule();
             extensionRouteRule.setExpression(expressionParser.parseExpression(routeRuleDef.getExtEl()));
             extensionRouteRule.setExtensionPoint((ExtensionPoint) extensionObj);
+            extensionRouteRule.setOrder(routeRuleDef.getOrder());
             extensionRouteRules.add(extensionRouteRule);
         }
         groupExtensionRouteRule.setGroup(this.group);
         groupExtensionRouteRule.setExtensionRouteRules(extensionRouteRules);
+        groupExtensionRouteRule.sortExtensionRouteRules();
         return (E) groupExtensionRouteRule;
     }
 

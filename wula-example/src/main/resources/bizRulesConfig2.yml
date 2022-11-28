@@ -10,6 +10,7 @@
     - beanName: defaultOrderRouter
       extEl: "['businessType'] == null"
       desc: 默认
+      order: 0
 - group: io.yec.wula.example.extpoint.IPersonRouter
   def:
     - beanName: yellowRouter

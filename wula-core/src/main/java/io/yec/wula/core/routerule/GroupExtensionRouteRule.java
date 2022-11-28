@@ -3,6 +3,8 @@ package io.yec.wula.core.routerule;
 import io.yec.wula.core.extension.ExtensionPoint;
 import io.yec.wula.core.extension.identity.Identity;
 import lombok.Data;
+import org.springframework.core.OrderComparator;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -33,6 +35,12 @@ public class GroupExtensionRouteRule implements IExtensionRouteRule {
             }
         }
         return null;
+    }
+
+    public void sortExtensionRouteRules() {
+        if (!CollectionUtils.isEmpty(extensionRouteRules)) {
+            OrderComparator.sort(extensionRouteRules);
+        }
     }
 
 }

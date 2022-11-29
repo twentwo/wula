@@ -8,7 +8,7 @@ import org.springframework.expression.ExpressionParser;
  * Rule Definition
  *
  * @author baijiu.yec
- * @since v2.6.0
+ * @since v1.6.0
  */
 public interface RuleDefinition<Rule extends IExtensionRouteRule> {
 

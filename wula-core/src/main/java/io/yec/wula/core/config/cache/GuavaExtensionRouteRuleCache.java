@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @since v1.4.0
  */
 @Slf4j
-public class GuavaExtensionRouteRuleCache extends AbstractCache implements ICache<RouteContext, ExtensionPoint> {
+public class GuavaExtensionRouteRuleCache implements ICache<RouteContext, ExtensionPoint> {
 
     private final Cache<Object, ExtensionPoint> cache;
 

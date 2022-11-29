@@ -19,7 +19,7 @@ import java.util.Objects;
  * @since v1.4.0
  */
 @Slf4j
-public class SimpleExtensionRouteRuleCache extends AbstractCache implements ICache<RouteContext, ExtensionPoint> {
+public class SimpleExtensionRouteRuleCache implements ICache<RouteContext, ExtensionPoint> {
 
     private final Map<Object, ExtensionPoint> cache;
 

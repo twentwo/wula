@@ -1,5 +1,6 @@
 package io.yec.wula.core.executor;
 
+import io.yec.wula.core.extension.ExtensionPoint;
 import io.yec.wula.core.extension.context.BizCondition;
 
 import java.util.function.Consumer;
@@ -24,7 +25,7 @@ public abstract class AbstractExtensionExecutor implements ExtensionExecutor {
      * @return extension invoke result
      */
     @Override
-    public <R, ExtP> R execute(Class<ExtP> targetClz, BizCondition bizCondition, Function<ExtP, R> exeFunction) {
+    public <R, ExtP extends ExtensionPoint> R execute(Class<ExtP> targetClz, BizCondition bizCondition, Function<ExtP, R> exeFunction) {
         ExtP component = locateComponent(targetClz, bizCondition);
         return exeFunction.apply(component);
     }
@@ -39,7 +40,7 @@ public abstract class AbstractExtensionExecutor implements ExtensionExecutor {
      * @param <ExtP>      Parameter Type
      */
     @Override
-    public <ExtP> void executeVoid(Class<ExtP> targetClz, BizCondition bizCondition, Consumer<ExtP> exeFunction) {
+    public <ExtP extends ExtensionPoint> void executeVoid(Class<ExtP> targetClz, BizCondition bizCondition, Consumer<ExtP> exeFunction) {
         ExtP component = locateComponent(targetClz, bizCondition);
         exeFunction.accept(component);
     }
@@ -53,5 +54,5 @@ public abstract class AbstractExtensionExecutor implements ExtensionExecutor {
      * @param <ExtP>
      * @return ext point implement
      */
-    protected abstract <ExtP> ExtP locateComponent(Class<ExtP> targetClz, BizCondition bizCondition);
+    protected abstract <ExtP extends ExtensionPoint> ExtP locateComponent(Class<ExtP> targetClz, BizCondition bizCondition);
 }

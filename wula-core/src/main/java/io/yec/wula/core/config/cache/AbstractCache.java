@@ -1,7 +1,7 @@
 package io.yec.wula.core.config.cache;
 
 import io.yec.wula.core.extension.ExtensionPoint;
-import io.yec.wula.core.extension.identity.Identity;
+import io.yec.wula.core.extension.context.RouteContext;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -14,20 +14,20 @@ import java.util.Objects;
  * @since v1.4.0
  */
 @Slf4j
-public class AbstractCache implements ICache<Identity, ExtensionPoint> {
+public class AbstractCache implements ICache<RouteContext, ExtensionPoint> {
 
     @Override
-    public ExtensionPoint get(Identity key) {
+    public ExtensionPoint get(RouteContext key) {
         return null;
     }
 
     @Override
-    public void add(Identity key, ExtensionPoint value) {
+    public void add(RouteContext key, ExtensionPoint value) {
 
     }
 
     @Override
-    public void remove(Identity key) {
+    public void remove(RouteContext key) {
 
     }
 
@@ -37,7 +37,7 @@ public class AbstractCache implements ICache<Identity, ExtensionPoint> {
     }
 
     @Override
-    public Object generateKey(Identity key) {
+    public Object generateKey(RouteContext key) {
         Map<String, Object> pairs = key.getPairs();
         StringBuilder builder = new StringBuilder();
         try {

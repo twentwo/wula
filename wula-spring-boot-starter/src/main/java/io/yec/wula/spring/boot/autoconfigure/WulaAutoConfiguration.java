@@ -6,8 +6,8 @@ import io.yec.wula.core.executor.ExtExtensionExecutorImpl;
 import io.yec.wula.core.executor.ExtensionExecutor;
 import io.yec.wula.core.extension.ExtPointBeanDefinitionRegistryPostProcessor;
 import io.yec.wula.core.extension.ExtensionPoint;
-import io.yec.wula.core.extension.identity.IdentityAssembler;
-import io.yec.wula.core.extension.identity.IdentityAssemblerImpl;
+import io.yec.wula.core.extension.context.RouteContextAssembler;
+import io.yec.wula.core.extension.context.RouteContextAssemblerImpl;
 import io.yec.wula.core.register.GroupExtensionRegister;
 import io.yec.wula.core.register.IExtensionRegister;
 import io.yec.wula.core.routerule.holder.GroupExtensionRouteRuleHolder;
@@ -97,16 +97,16 @@ public class WulaAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(IdentityAssembler.class)
-    public IdentityAssembler identityAssembler() {
-        return new IdentityAssemblerImpl();
+    @ConditionalOnMissingBean(RouteContextAssembler.class)
+    public RouteContextAssembler routeContextAssembler() {
+        return new RouteContextAssemblerImpl();
     }
 
     @Bean
     @ConditionalOnMissingBean(ExtensionExecutor.class)
-    @ConditionalOnBean({IExtensionRouteRuleHolder.class, ICache.class, IdentityAssembler.class})
-    public ExtensionExecutor extensionExecutor(IExtensionRouteRuleHolder extensionRouteRuleHolder, IdentityAssembler identityAssembler, ICache cache) {
-        return new ExtExtensionExecutorImpl(extensionRouteRuleHolder, identityAssembler, cache);
+    @ConditionalOnBean({IExtensionRouteRuleHolder.class, ICache.class, RouteContextAssembler.class})
+    public ExtensionExecutor extensionExecutor(IExtensionRouteRuleHolder extensionRouteRuleHolder, RouteContextAssembler routeContextAssembler, ICache cache) {
+        return new ExtExtensionExecutorImpl(extensionRouteRuleHolder, routeContextAssembler, cache);
     }
 
 }

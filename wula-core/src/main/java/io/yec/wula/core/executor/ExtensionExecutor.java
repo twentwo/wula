@@ -1,6 +1,6 @@
 package io.yec.wula.core.executor;
 
-import io.yec.wula.core.extension.identity.BizIdentity;
+import io.yec.wula.core.extension.context.BizCondition;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -13,16 +13,16 @@ import java.util.function.Function;
  */
 public interface ExtensionExecutor {
 
-    <R, ExtP> R execute(Class<ExtP> targetClz, BizIdentity entity, Function<ExtP, R> exeFunction);
+    <R, ExtP> R execute(Class<ExtP> targetClz, BizCondition bizCondition, Function<ExtP, R> exeFunction);
 
 
     /**
      * Execute extensions without Response
      *
      * @param targetClz   extpoint interface
-     * @param entity      biz entity
+     * @param bizCondition biz condition
      * @param exeFunction extpoint invoke method
      * @param <ExtP>      Parameter Type
      */
-    <ExtP> void executeVoid(Class<ExtP> targetClz, BizIdentity entity, Consumer<ExtP> exeFunction);
+    <ExtP> void executeVoid(Class<ExtP> targetClz, BizCondition bizCondition, Consumer<ExtP> exeFunction);
 }

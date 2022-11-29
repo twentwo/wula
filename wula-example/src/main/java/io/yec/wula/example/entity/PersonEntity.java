@@ -1,6 +1,6 @@
 package io.yec.wula.example.entity;
 
-import io.yec.wula.example.identity.RaceEnum;
+import io.yec.wula.example.condition.RaceEnum;
 import lombok.Builder;
 import lombok.Data;
 

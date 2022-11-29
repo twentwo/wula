@@ -1,6 +1,6 @@
 package io.yec.wula.example.entity;
 
-import io.yec.wula.example.identity.BusinessTypeEnum;
+import io.yec.wula.example.condition.BusinessTypeEnum;
 import lombok.Builder;
 import lombok.Data;
 

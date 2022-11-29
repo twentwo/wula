@@ -1,4 +1,4 @@
-package io.yec.wula.example.identity;
+package io.yec.wula.example.condition;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

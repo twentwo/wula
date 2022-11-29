@@ -1,7 +1,7 @@
 package io.yec.wula.core.routerule;
 
 import io.yec.wula.core.extension.ExtensionPoint;
-import io.yec.wula.core.extension.identity.Identity;
+import io.yec.wula.core.extension.context.RouteContext;
 
 /**
  * IExtensionRouteRule
@@ -14,8 +14,8 @@ public interface IExtensionRouteRule {
      * match and return ExtensionPoint
      *
      * @param clazz
-     * @param identity
+     * @param routeContext
      * @return
      */
-    ExtensionPoint match(Class clazz, Identity identity);
+    ExtensionPoint match(Class clazz, RouteContext routeContext);
 }

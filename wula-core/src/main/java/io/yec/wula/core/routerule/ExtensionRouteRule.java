@@ -1,7 +1,7 @@
 package io.yec.wula.core.routerule;
 
 import io.yec.wula.core.extension.ExtensionPoint;
-import io.yec.wula.core.extension.identity.Identity;
+import io.yec.wula.core.extension.context.RouteContext;
 import lombok.Data;
 import org.springframework.core.Ordered;
 import org.springframework.expression.Expression;
@@ -21,8 +21,8 @@ public class ExtensionRouteRule implements Ordered {
     private ExtensionPoint extensionPoint;
     private Integer order;
 
-    public boolean match(Identity identity) {
-        return this.getExpression().getValue(identity.getPairs(), Boolean.class);
+    public boolean match(RouteContext routeContext) {
+        return this.getExpression().getValue(routeContext.getPairs(), Boolean.class);
     }
 
     @Override

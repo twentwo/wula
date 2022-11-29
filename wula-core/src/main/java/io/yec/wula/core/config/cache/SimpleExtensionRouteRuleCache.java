@@ -6,7 +6,7 @@ import com.google.common.cache.AbstractCache.StatsCounter;
 import com.google.common.cache.CacheStats;
 import com.google.common.collect.Maps;
 import io.yec.wula.core.extension.ExtensionPoint;
-import io.yec.wula.core.extension.identity.Identity;
+import io.yec.wula.core.extension.context.RouteContext;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -19,7 +19,7 @@ import java.util.Objects;
  * @since v1.4.0
  */
 @Slf4j
-public class SimpleExtensionRouteRuleCache extends AbstractCache implements ICache<Identity, ExtensionPoint> {
+public class SimpleExtensionRouteRuleCache extends AbstractCache implements ICache<RouteContext, ExtensionPoint> {
 
     private final Map<Object, ExtensionPoint> cache;
 
@@ -31,9 +31,9 @@ public class SimpleExtensionRouteRuleCache extends AbstractCache implements ICac
     }
 
     @Override
-    public ExtensionPoint get(Identity identity) {
+    public ExtensionPoint get(RouteContext routeContext) {
         try {
-            Object key = generateKey(identity);
+            Object key = generateKey(routeContext);
             ExtensionPoint value = cache.get(key);
             if (value == null) {
                 globalStatsCounter.recordMisses(1);
@@ -48,9 +48,9 @@ public class SimpleExtensionRouteRuleCache extends AbstractCache implements ICac
     }
 
     @Override
-    public void add(Identity identity, ExtensionPoint extensionPoint) {
+    public void add(RouteContext routeContext, ExtensionPoint extensionPoint) {
         try {
-            Object key = generateKey(identity);
+            Object key = generateKey(routeContext);
             cache.putIfAbsent(key, extensionPoint);
         } catch (Exception e) {
             log.error("cache add error", e);
@@ -58,8 +58,8 @@ public class SimpleExtensionRouteRuleCache extends AbstractCache implements ICac
     }
 
     @Override
-    public void remove(Identity identity) {
-        Object key = generateKey(identity);
+    public void remove(RouteContext routeContext) {
+        Object key = generateKey(routeContext);
         cache.remove(key);
     }
 

@@ -3,9 +3,9 @@ package io.yec.wula.core.executor;
 import com.google.common.base.Preconditions;
 import io.yec.wula.core.config.cache.ICache;
 import io.yec.wula.core.exception.ExtException;
-import io.yec.wula.core.extension.identity.BizIdentity;
-import io.yec.wula.core.extension.identity.Identity;
-import io.yec.wula.core.extension.identity.IdentityAssembler;
+import io.yec.wula.core.extension.context.BizCondition;
+import io.yec.wula.core.extension.context.RouteContext;
+import io.yec.wula.core.extension.context.RouteContextAssembler;
 import io.yec.wula.core.routerule.IExtensionRouteRule;
 import io.yec.wula.core.routerule.holder.IExtensionRouteRuleHolder;
 import lombok.Setter;
@@ -24,45 +24,45 @@ public class ExtExtensionExecutorImpl extends AbstractExtensionExecutor {
     private IExtensionRouteRuleHolder extensionRouteRuleHolder;
 
     @Setter
-    private IdentityAssembler entityIdentityAssembler;
+    private RouteContextAssembler routeContextAssembler;
 
     @Setter
     private ICache cache;
 
-    public ExtExtensionExecutorImpl(IExtensionRouteRuleHolder extensionRouteRuleHolder, IdentityAssembler entityIdentityAssembler, ICache cache) {
+    public ExtExtensionExecutorImpl(IExtensionRouteRuleHolder extensionRouteRuleHolder, RouteContextAssembler routeContextAssembler, ICache cache) {
         this.extensionRouteRuleHolder = extensionRouteRuleHolder;
-        this.entityIdentityAssembler = entityIdentityAssembler;
+        this.routeContextAssembler = routeContextAssembler;
         this.cache = cache;
     }
 
     @Override
-    protected <ExtP> ExtP locateComponent(Class<ExtP> targetClz, BizIdentity entity) {
-        return locateExtension(targetClz, entity);
+    protected <ExtP> ExtP locateComponent(Class<ExtP> targetClz, BizCondition bizCondition) {
+        return locateExtension(targetClz, bizCondition);
     }
 
     /**
      * locate extension point
      * <p>
-     * assemble biz params by IdentityAssembler
+     * assemble route context by routeContextAssembler
      * traverse ExtensionRouteRule, find the ext point interface impl && judge the biz ext-el match or not
      * hit the only ext point and return
      *
      * @param targetClz
-     * @param entity
+     * @param bizCondition
      * @param <ExtP>
      * @return
      */
-    protected <ExtP> ExtP locateExtension(Class<ExtP> targetClz, BizIdentity entity) {
-        Preconditions.checkArgument(Objects.nonNull(entity), "biz entity can not be null for extension");
-        Identity identity = entityIdentityAssembler.assemble(entity);
-        ExtP extensionPoint = (ExtP) cache.get(identity);
+    protected <ExtP> ExtP locateExtension(Class<ExtP> targetClz, BizCondition bizCondition) {
+        Preconditions.checkArgument(Objects.nonNull(bizCondition), "biz condition can not be null for extension");
+        RouteContext routeContext = routeContextAssembler.assemble(bizCondition);
+        ExtP extensionPoint = (ExtP) cache.get(routeContext);
         if (Objects.nonNull(extensionPoint)) {
             return extensionPoint;
         }
         IExtensionRouteRule extensionRouteRule = extensionRouteRuleHolder.getExtensionRouteRule(targetClz);
         if (Objects.nonNull(extensionRouteRule)) {
-            extensionPoint = (ExtP) extensionRouteRule.match(targetClz, identity);
-            cache.add(identity, extensionPoint);
+            extensionPoint = (ExtP) extensionRouteRule.match(targetClz, routeContext);
+            cache.add(routeContext, extensionPoint);
             return extensionPoint;
         }
         throw new ExtException("locate ext fail, not extension match");

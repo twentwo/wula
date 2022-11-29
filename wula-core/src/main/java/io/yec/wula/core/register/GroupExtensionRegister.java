@@ -1,9 +1,9 @@
 package io.yec.wula.core.register;
 
-import io.yec.wula.core.config.GroupRouteRuleDef;
 import io.yec.wula.core.config.loader.JsonRuleConfigLoader;
 import io.yec.wula.core.config.loader.RuleConfigLoader;
 import io.yec.wula.core.config.loader.YamlRuleConfigLoader;
+import io.yec.wula.core.config.ruledef.GroupRouteRuleDef;
 import io.yec.wula.core.exception.ExtException;
 import io.yec.wula.core.routerule.GroupExtensionRouteRule;
 import io.yec.wula.core.routerule.IExtensionRouteRule;
@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.util.ClassUtils;
 
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class GroupExtensionRegister implements IExtensionRegister<GroupExtension
                         + "' is not known to any RuleConfigLoader.");
             }
             List<GroupRouteRuleDef> routeRuleDefs = selectedRuleConfigLoader.load(location, new PathMatchingResourcePatternResolver(resourceLoader));
-            routeRuleDefs.forEach(routeRuleDef -> extensionRouteRuleGroup.put(ClassUtils.resolveClassName(routeRuleDef.getGroup(), null), routeRuleDef.toRule(applicationContext)));
+            routeRuleDefs.forEach(routeRuleDef -> extensionRouteRuleGroup.put(ClassUtils.resolveClassName(routeRuleDef.getGroup(), null), routeRuleDef.toRule(applicationContext, new SpelExpressionParser())));
         }
         extensionRouteRuleHolder.setExtensionRouteRuleMap(extensionRouteRuleGroup);
     }

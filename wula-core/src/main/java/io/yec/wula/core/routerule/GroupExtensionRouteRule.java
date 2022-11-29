@@ -2,6 +2,7 @@ package io.yec.wula.core.routerule;
 
 import io.yec.wula.core.extension.ExtensionPoint;
 import io.yec.wula.core.extension.context.RouteContext;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.core.OrderComparator;
 import org.springframework.util.CollectionUtils;
@@ -14,6 +15,7 @@ import java.util.List;
  * @author baijiu.yec
  * @since 2022/06/23
  */
+@Builder
 @Data
 public class GroupExtensionRouteRule implements IExtensionRouteRule {
 

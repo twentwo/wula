@@ -2,6 +2,7 @@ package io.yec.wula.spring.boot.autoconfigure;
 
 import io.yec.wula.core.config.cache.ICache;
 import io.yec.wula.core.config.cache.SimpleExtensionRouteRuleCache;
+import io.yec.wula.core.exception.ExtException;
 import io.yec.wula.core.executor.ExtExtensionExecutorImpl;
 import io.yec.wula.core.executor.ExtensionExecutor;
 import io.yec.wula.core.extension.ExtPointBeanDefinitionRegistryPostProcessor;
@@ -25,8 +26,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.CollectionUtils;
 
-import java.util.Objects;
 import java.util.Set;
 
 import static io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils.*;
@@ -57,9 +58,12 @@ public class WulaAutoConfiguration {
     @Bean(name = BASE_PACKAGES_BEAN_NAME)
     public Set<String> wulaBasePackages(Environment environment) {
         WulaConfigProperties wulaConfigProperties = Binder.get(environment)
-                .bind(WULA_ROUTER_PREFIX, WulaConfigProperties.class)
-                .orElse(null);
-        return Objects.isNull(wulaConfigProperties) ? null : wulaConfigProperties.getScan().getBasePackages();
+                .bind(WULA_ROUTER_PREFIX, WulaConfigProperties.class).get();
+        Set<String> basePackages = wulaConfigProperties.getScan().getBasePackages();
+        if (CollectionUtils.isEmpty(basePackages)) {
+            throw new ExtException(WULA_SCAN_PREFIX + BASE_PACKAGES_PROPERTY_NAME + " must be set");
+        }
+        return basePackages;
     }
 
     /**

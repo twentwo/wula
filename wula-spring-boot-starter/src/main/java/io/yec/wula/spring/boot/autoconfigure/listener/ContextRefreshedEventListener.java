@@ -3,6 +3,7 @@ package io.yec.wula.spring.boot.autoconfigure.listener;
 import io.yec.wula.core.register.IExtensionRegister;
 import io.yec.wula.spring.boot.autoconfigure.properties.WulaConfigProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -11,7 +12,6 @@ import org.springframework.util.StringUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * ContextRefreshedEventListener
@@ -31,9 +31,11 @@ public class ContextRefreshedEventListener implements ApplicationListener<Contex
     public void onApplicationEvent(ContextRefreshedEvent event) {
         ApplicationContext applicationContext = event.getApplicationContext();
         if (applicationContext.getParent() == null) {
-            WulaConfigProperties wulaConfigProperties = applicationContext.getBean(WulaConfigProperties.class);
-            if (Objects.isNull(wulaConfigProperties)) {
-                log.warn("register IExtensionRouteRule fail! The bean 'wulaConfigProperties' is missing!!!");
+            WulaConfigProperties wulaConfigProperties;
+            try {
+                wulaConfigProperties = applicationContext.getBean(WulaConfigProperties.class);
+            } catch (BeansException exception) {
+                log.error("Get bean of type err: " + WulaConfigProperties.class);
                 return;
             }
             String config = wulaConfigProperties.getConfig();

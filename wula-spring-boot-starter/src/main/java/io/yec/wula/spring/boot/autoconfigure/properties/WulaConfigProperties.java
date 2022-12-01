@@ -12,7 +12,7 @@ import static io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils.WULA_ROUTER_
 
 
 /**
- * FresnoConfigProperties
+ * WulaConfigProperties
  *
  * @author baijiu.yec
  * @since 2022/04/29
@@ -25,8 +25,6 @@ public class WulaConfigProperties {
     private String config = "classpath:bizRulesConfig*.json,classpath:bizRulesConfig*.yml";
 
     @NestedConfigurationProperty
-    @Setter
-    @Getter
     private Scan scan = new Scan();
 
     public static class Scan {

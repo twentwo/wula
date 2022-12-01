@@ -25,6 +25,8 @@ maven dependency import
 
 create different strategy bean with a logical component name
 
+Note that the strategy bean must extend `io.yec.wula.core.extension.ExtensionPoint` interface
+
 ```java
 @Slf4j
 @ExtPoint("newOrderRouter")

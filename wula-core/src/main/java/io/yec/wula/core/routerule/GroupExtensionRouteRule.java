@@ -1,7 +1,8 @@
 package io.yec.wula.core.routerule;
 
 import io.yec.wula.core.extension.ExtensionPoint;
-import io.yec.wula.core.extension.identity.Identity;
+import io.yec.wula.core.extension.context.RouteContext;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.core.OrderComparator;
 import org.springframework.util.CollectionUtils;
@@ -14,6 +15,7 @@ import java.util.List;
  * @author baijiu.yec
  * @since 2022/06/23
  */
+@Builder
 @Data
 public class GroupExtensionRouteRule implements IExtensionRouteRule {
 
@@ -27,10 +29,10 @@ public class GroupExtensionRouteRule implements IExtensionRouteRule {
     private List<ExtensionRouteRule> extensionRouteRules;
 
     @Override
-    public ExtensionPoint match(Class clazz, Identity identity) {
+    public ExtensionPoint match(Class clazz, RouteContext routeContext) {
         for (ExtensionRouteRule extensionRouteRule : extensionRouteRules) {
             if (clazz.isAssignableFrom(extensionRouteRule.getExtensionPoint().getClass())
-                    && extensionRouteRule.match(identity)) {
+                    && extensionRouteRule.match(routeContext)) {
                 return extensionRouteRule.getExtensionPoint();
             }
         }

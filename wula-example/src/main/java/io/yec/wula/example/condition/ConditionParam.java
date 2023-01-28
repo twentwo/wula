@@ -1,25 +1,24 @@
-package io.yec.wula.example.identity;
+package io.yec.wula.example.condition;
 
 
-import io.yec.wula.core.extension.identity.BizIdentity;
-import io.yec.wula.core.extension.identity.Identity;
+import io.yec.wula.core.extension.context.BizCondition;
+import io.yec.wula.core.extension.context.RouteContext;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * ext point identity param
+ * ext point condition param
  *
  * @author baijiu.yec
  * @since 2022/06/24
  */
 @Getter
 @Builder
-public class IdentityParam implements BizIdentity {
+public class ConditionParam implements BizCondition {
 
     /**
      * 业务类型
@@ -48,7 +47,7 @@ public class IdentityParam implements BizIdentity {
     private String hometown;
 
     @Override
-    public Identity toIdentity() {
+    public RouteContext toRouteContext() {
         Map<String, Object> pairs = new HashMap<>(64);
         pairs.put("businessType", Objects.nonNull(this.getBusinessType()) ? this.getBusinessType().name() : null);
         pairs.put("discounted", this.getDiscounted());
@@ -56,7 +55,7 @@ public class IdentityParam implements BizIdentity {
         pairs.put("raceEnum", Objects.nonNull(this.getRaceEnum()) ? this.getRaceEnum().name() : null);
         pairs.put("foreign", this.getForeign());
         pairs.put("hometown", this.getHometown());
-        return new Identity(pairs);
+        return new RouteContext(pairs);
     }
 
 }

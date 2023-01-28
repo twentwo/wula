@@ -1,4 +1,4 @@
-package io.yec.wula.core.extension.identity;
+package io.yec.wula.core.extension.context;
 
 import lombok.ToString;
 
@@ -6,17 +6,17 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * Identity
+ * RouteContext
  *
  * @author baijiu.yec
  * @since 2022/06/23
  */
 @ToString
-public class Identity {
+public class RouteContext {
 
     Map<String, Object> pairs;
 
-    public Identity(Map<String, Object> pairs) {
+    public RouteContext(Map<String, Object> pairs) {
         this.pairs = Collections.unmodifiableMap(pairs);
     }
 

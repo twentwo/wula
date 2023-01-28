@@ -6,7 +6,7 @@ import io.yec.wula.example.entity.OrderEntity;
 import io.yec.wula.example.entity.PersonEntity;
 import io.yec.wula.example.extpoint.IOrderRouter;
 import io.yec.wula.example.extpoint.IPersonRouter;
-import io.yec.wula.example.identity.IdentityParam;
+import io.yec.wula.example.condition.ConditionParam;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -27,7 +27,7 @@ public class WulaApplication {
         OrderEntity newOrderEntity = OrderEntity.createNewOrderEntity();
         for (int i = 0; i < Integer.SIZE; i++) {
         extensionExecutor.executeVoid(IOrderRouter.class,
-                IdentityParam.builder()
+                ConditionParam.builder()
                         .businessType(newOrderEntity.getBusinessType())
                         .discounted(false)
                         .sellerId("618")
@@ -37,7 +37,7 @@ public class WulaApplication {
 
         PersonEntity yellowPersonEntity = PersonEntity.createYellowPersonEntity();
         String name = extensionExecutor.execute(IPersonRouter.class,
-                IdentityParam.builder()
+                ConditionParam.builder()
                         .raceEnum(yellowPersonEntity.getRaceEnum())
                         .build(),
                 personRouter -> personRouter.desc(yellowPersonEntity));

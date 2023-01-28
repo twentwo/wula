@@ -3,7 +3,7 @@ package io.yec.wula.core.config.loader;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import io.yec.wula.core.config.GroupRouteRuleDef;
+import io.yec.wula.core.config.ruledef.GroupRouteRuleDef;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.support.ResourcePatternResolver;

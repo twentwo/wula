@@ -2,6 +2,7 @@ package io.yec.wula.core.config.loader;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.yec.wula.core.config.ruledef.RuleDefinition;
 import io.yec.wula.core.exception.ExtException;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.Resource;
@@ -23,7 +24,7 @@ import java.util.stream.Stream;
  * @author baijiu.yec
  * @since 2022/07/08
  */
-public interface RuleConfigLoader<RuleDef> {
+public interface RuleConfigLoader<RuleDef extends RuleDefinition> {
 
     /**
      * Returns the file extensions that the loader supports (excluding the '.').

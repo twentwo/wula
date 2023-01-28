@@ -2,12 +2,13 @@ package io.yec.wula.spring.boot.autoconfigure;
 
 import io.yec.wula.core.config.cache.ICache;
 import io.yec.wula.core.config.cache.SimpleExtensionRouteRuleCache;
+import io.yec.wula.core.exception.ExtException;
 import io.yec.wula.core.executor.ExtExtensionExecutorImpl;
 import io.yec.wula.core.executor.ExtensionExecutor;
 import io.yec.wula.core.extension.ExtPointBeanDefinitionRegistryPostProcessor;
 import io.yec.wula.core.extension.ExtensionPoint;
-import io.yec.wula.core.extension.identity.IdentityAssembler;
-import io.yec.wula.core.extension.identity.IdentityAssemblerImpl;
+import io.yec.wula.core.extension.context.RouteContextAssembler;
+import io.yec.wula.core.extension.context.RouteContextAssemblerImpl;
 import io.yec.wula.core.register.GroupExtensionRegister;
 import io.yec.wula.core.register.IExtensionRegister;
 import io.yec.wula.core.routerule.holder.GroupExtensionRouteRuleHolder;
@@ -25,8 +26,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.CollectionUtils;
 
-import java.util.Objects;
 import java.util.Set;
 
 import static io.yec.wula.spring.boot.autoconfigure.utils.WulaUtils.*;
@@ -57,9 +58,12 @@ public class WulaAutoConfiguration {
     @Bean(name = BASE_PACKAGES_BEAN_NAME)
     public Set<String> wulaBasePackages(Environment environment) {
         WulaConfigProperties wulaConfigProperties = Binder.get(environment)
-                .bind(WULA_ROUTER_PREFIX, WulaConfigProperties.class)
-                .orElse(null);
-        return Objects.isNull(wulaConfigProperties) ? null : wulaConfigProperties.getScan().getBasePackages();
+                .bind(WULA_ROUTER_PREFIX, WulaConfigProperties.class).get();
+        Set<String> basePackages = wulaConfigProperties.getScan().getBasePackages();
+        if (CollectionUtils.isEmpty(basePackages)) {
+            throw new ExtException(WULA_SCAN_PREFIX + BASE_PACKAGES_PROPERTY_NAME + " must be set");
+        }
+        return basePackages;
     }
 
     /**
@@ -97,16 +101,16 @@ public class WulaAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(IdentityAssembler.class)
-    public IdentityAssembler identityAssembler() {
-        return new IdentityAssemblerImpl();
+    @ConditionalOnMissingBean(RouteContextAssembler.class)
+    public RouteContextAssembler routeContextAssembler() {
+        return new RouteContextAssemblerImpl();
     }
 
     @Bean
     @ConditionalOnMissingBean(ExtensionExecutor.class)
-    @ConditionalOnBean({IExtensionRouteRuleHolder.class, ICache.class, IdentityAssembler.class})
-    public ExtensionExecutor extensionExecutor(IExtensionRouteRuleHolder extensionRouteRuleHolder, IdentityAssembler identityAssembler, ICache cache) {
-        return new ExtExtensionExecutorImpl(extensionRouteRuleHolder, identityAssembler, cache);
+    @ConditionalOnBean({IExtensionRouteRuleHolder.class, ICache.class, RouteContextAssembler.class})
+    public ExtensionExecutor extensionExecutor(IExtensionRouteRuleHolder extensionRouteRuleHolder, RouteContextAssembler routeContextAssembler, ICache cache) {
+        return new ExtExtensionExecutorImpl(extensionRouteRuleHolder, routeContextAssembler, cache);
     }
 
 }

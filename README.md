@@ -25,6 +25,8 @@ maven dependency import
 
 create different strategy bean with a logical component name
 
+Note that the strategy bean must extend `io.yec.wula.core.extension.ExtensionPoint` interface
+
 ```java
 @Slf4j
 @ExtPoint("newOrderRouter")
@@ -92,14 +94,14 @@ or
       desc: 黄种人
 ```
 
-### BizIdentity
+### BizCondition
 
-define BizIdentity
+define BizCondition
 
 ```java
 @Getter
 @Builder
-public class IdentityParam implements BizIdentity {
+public class ConditionParam implements BizCondition {
 
     /**
      * 业务类型
@@ -127,9 +129,8 @@ public class IdentityParam implements BizIdentity {
      */
     private String hometown;
 
-
     @Override
-    public Identity toIdentity() {
+    public RouteContext toRouteContext() {
         Map<String, Object> pairs = new HashMap<>(64);
         pairs.put("businessType", Objects.nonNull(this.getBusinessType()) ? this.getBusinessType().name() : null);
         pairs.put("discounted", this.getDiscounted());
@@ -137,7 +138,7 @@ public class IdentityParam implements BizIdentity {
         pairs.put("raceEnum", Objects.nonNull(this.getRaceEnum()) ? this.getRaceEnum().name() : null);
         pairs.put("foreign", this.getForeign());
         pairs.put("hometown", this.getHometown());
-        return new Identity(pairs);
+        return new RouteContext(pairs);
     }
 
 }
@@ -157,7 +158,7 @@ public class WulaApplication {
         OrderEntity newOrderEntity = OrderEntity.createNewOrderEntity();
         extensionExecutor.executeVoid(IOrderRouter.class,
                 // match rule param
-                IdentityParam.builder()
+                ConditionParam.builder()
                         .businessType(newOrderEntity.getBusinessType())
                         .discounted(false)
                         .sellerId("618")

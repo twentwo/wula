@@ -3,7 +3,7 @@ package io.yec.wula.core.config.cache;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import io.yec.wula.core.extension.ExtensionPoint;
-import io.yec.wula.core.extension.identity.Identity;
+import io.yec.wula.core.extension.context.RouteContext;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @since v1.4.0
  */
 @Slf4j
-public class GuavaExtensionRouteRuleCache extends AbstractCache implements ICache<Identity, ExtensionPoint> {
+public class GuavaExtensionRouteRuleCache implements ICache<RouteContext, ExtensionPoint> {
 
     private final Cache<Object, ExtensionPoint> cache;
 
@@ -30,9 +30,9 @@ public class GuavaExtensionRouteRuleCache extends AbstractCache implements ICach
     }
 
     @Override
-    public ExtensionPoint get(Identity identity) {
+    public ExtensionPoint get(RouteContext routeContext) {
         try {
-            Object key = generateKey(identity);
+            Object key = generateKey(routeContext);
             return cache.getIfPresent(key);
         } catch (Exception e) {
             log.error("cache get error", e);
@@ -41,9 +41,9 @@ public class GuavaExtensionRouteRuleCache extends AbstractCache implements ICach
     }
 
     @Override
-    public void add(Identity identity, ExtensionPoint extensionPoint) {
+    public void add(RouteContext routeContext, ExtensionPoint extensionPoint) {
         try {
-            Object key = generateKey(identity);
+            Object key = generateKey(routeContext);
             cache.put(key, extensionPoint);
         } catch (Exception e) {
             log.error("cache add error", e);
@@ -52,8 +52,8 @@ public class GuavaExtensionRouteRuleCache extends AbstractCache implements ICach
     }
 
     @Override
-    public void remove(Identity identity) {
-        Object key = generateKey(identity);
+    public void remove(RouteContext routeContext) {
+        Object key = generateKey(routeContext);
         cache.invalidate(key);
     }
 
